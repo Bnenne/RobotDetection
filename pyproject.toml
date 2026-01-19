@@ -1,0 +1,9 @@
+[project]
+name = "robotdetection"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.12.5",
+    "ultralytics>=8.4.4",
+]
