@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['robot']
+
+roboflow:
+  workspace: bnenne
+  project: jerrywu_frc114_robot_v2-przxh-99ob2
+  version: 1
+  license: BY-NC-SA 4.0
+  url: https://universe.roboflow.com/bnenne/jerrywu_frc114_robot_v2-przxh-99ob2/dataset/1
