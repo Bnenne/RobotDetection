@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import cv2
 
 # Load your trained YOLO26n model
-model = YOLO("model path")
+model = YOLO("best.pt")
 
 # Video source
 video_path = "video path"

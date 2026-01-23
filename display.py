@@ -41,36 +41,41 @@ SCALE = 2  # 1 inch = 2 pixels
 width_px = int(FIELD_DIMENSIONS.x * SCALE)
 height_px = int(FIELD_DIMENSIONS.y * SCALE)
 
+def translate(x, y):
+    new_y = (height_px * SCALE) - (y * SCALE)
+    return int(x * SCALE), int(new_y * SCALE)
+
 # Create a white image
 img = np.ones((height_px, width_px, 3), dtype=np.uint8) * 255
 
 cv2.line(
     img,
-    (int(FIELD_CORNERS.top_left.x * SCALE), 0),
-    (0, int(FIELD_CORNERS.top_left.y * SCALE)),
+    translate(FIELD_CORNERS.top_left.x, 0),
+    translate(0, FIELD_CORNERS.top_left.y),
     (0, 0, 0),
 )
 
-cv2.line(
-    img,
-    (int(FIELD_CORNERS.top_right.x * SCALE), 0),
-    (int(FIELD_DIMENSIONS.x * SCALE), int(FIELD_CORNERS.top_right.y * SCALE)),
-    (0, 0, 0),
-)
+# cv2.line(
+#     img,
+#     place(FIELD_CORNERS.top_left.x, 0),
+#     place(FIELD_DIMENSIONS.x, FIELD_CORNERS.top_left.y),
+#     (0, 0, 0),
+# )
+#
+# cv2.line(
+#     img,
+#     place(FIELD_CORNERS.top_left.x, FIELD_DIMENSIONS.y),
+#     place(0, FIELD_CORNERS.top_left.y),
+#     (0, 0, 0),
+# )
+#
+# cv2.line(
+#     img,
+#     place(FIELD_CORNERS.top_left.x, FIELD_DIMENSIONS.y),
+#     place(FIELD_DIMENSIONS.x, FIELD_CORNERS.top_left.y),
+#     (0, 0, 0),
+# )
 
-cv2.line(
-    img,
-    (int(FIELD_CORNERS.bottom_left.x * SCALE), int(FIELD_DIMENSIONS.y  * SCALE)),
-    (0, int(FIELD_CORNERS.bottom_left.y * SCALE)),
-    (0, 0, 0),
-)
-
-cv2.line(
-    img,
-    (int(FIELD_CORNERS.bottom_right.x * SCALE), int(FIELD_DIMENSIONS.y * SCALE)),
-    (int(FIELD_DIMENSIONS.x  * SCALE), int(FIELD_CORNERS.bottom_right.y * SCALE)),
-    (0, 0, 0),
-)
-
-cv2.imshow("rect", img)
+cv2.imshow("Field", img)
 cv2.waitKey(0)
+cv2.destroyAllWindows()
