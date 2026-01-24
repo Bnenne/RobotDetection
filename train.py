@@ -10,22 +10,20 @@ def train():
 
     # Train the model
     model.train(
-        data="dataset.yaml",    # path to dataset yaml
-        epochs=3,              # increase if dataset is small
+        data="dataset.yaml", # path to dataset yaml
+        epochs=3, # increase if dataset is small
         imgsz=640,
-        batch=16,               # lower if you get OOM errors
+        batch=16, # lower if you get OOM errors
         device=device,
-        project="runs/detect",  # output directory
-        name="robot_detector",  # experiment name
+        project="runs/detect", # output directory
+        name="robot_detector", # experiment name
         workers=4,
-        patience=20,            # early stopping
+        patience=20,
         pretrained=False,
         verbose=True
     )
 
-    # Evaluate on validation + test set
+    # Evaluate on validation and test set
     model.val()
-
-    print("Training complete!")
 
 train()
