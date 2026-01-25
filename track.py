@@ -2,11 +2,11 @@ from ultralytics import YOLO
 import cv2
 
 # Loading trained model
-model = YOLO("RobotDetection_v1.pt")
+model = YOLO("RobotDetection_v2.pt")
 
 # Video paths
 video_path = "test_track.mp4"
-output_path = "test_track_botsort.mp4"
+output_path = "test_track_botsort_2.mp4"
 
 cap = cv2.VideoCapture(video_path)
 
@@ -17,6 +17,8 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+
+print("Tracking...")
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -36,6 +38,8 @@ while cap.isOpened():
 
     # Write the annotated frame
     out.write(annotated_frame)
+
+print("Done.")
 
 # Stop video and tracking
 cap.release()
