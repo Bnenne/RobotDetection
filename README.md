@@ -14,8 +14,6 @@ Original Video	Annotated Output
 
 	
 
-You can also view short demo videos in the demo/ folder to see the model in action.
-
 Quick Start
 1. Install Dependencies
 
