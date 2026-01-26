@@ -16,7 +16,7 @@ Because running the full model can take several minutes per video, we provide pr
 Quick Start
 1. Install Dependencies
 
-```uv add -r requirements.txt```
+```uv sync```
 
 2. Train a model
 
