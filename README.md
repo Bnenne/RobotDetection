@@ -10,9 +10,8 @@ The project is intended for research and analysis, not real-time match control.
 # Demo
 Because running the full model can take several minutes per video, we provide preprocessed examples:
 
-Original Video	Annotated Output
-
-	
+![Original](demos/original.gif)
+![Annotated](demos/annotated.gif)
 
 Quick Start
 1. Install Dependencies
