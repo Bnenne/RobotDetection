@@ -31,7 +31,7 @@ Make sure your videos are in MP4 format.
 Annotated output will be saved in the specified output path.
 
 # Notes
-The full model i use in my demos videos is large and computationally intensive.
+The full model I use in my demos videos is large and computationally intensive.
 To get to that point would require a nicer GPU and an upwards of an hour of training time.
 For faster training, turn down the epochs and use a model like yolo26n.pt
 
