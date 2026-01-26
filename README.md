@@ -16,6 +16,8 @@ Because running the full model can take several minutes per video, we provide pr
 # Use
 To use the project you can download the release, unzip the file, then run the executable. If you would like to use a different video than the one provided, just name it "test_track.mp4" and place it in the directory with the executable.
 
+or
+
 Quick Start
 1. Install Dependencies
 
