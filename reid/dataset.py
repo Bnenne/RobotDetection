@@ -17,7 +17,7 @@ def load_dataset():
                              std=[0.229, 0.224, 0.225]),
     ])
 
-    train_ds = datasets.ImageFolder("reid_dataset/train", transform=train_tfms)
-    val_ds   = datasets.ImageFolder("reid_dataset/val", transform=val_tfms)
+    train_ds = datasets.ImageFolder("../reid_dataset/train", transform=train_tfms)
+    val_ds   = datasets.ImageFolder("../reid_dataset/val", transform=val_tfms)
 
     return train_ds, val_ds

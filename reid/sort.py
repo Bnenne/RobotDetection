@@ -1,6 +1,6 @@
 import json, os
 
-with open('reid.json', 'r', encoding='utf-8') as file:
+with open('../reid.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 for item in data["items"]:

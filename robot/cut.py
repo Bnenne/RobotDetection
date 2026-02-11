@@ -1,13 +1,13 @@
 from ultralytics import YOLO
 import cv2, os
 
-directory_path = 'videos'
+directory_path = '../videos'
 
 entries = os.listdir(directory_path)
 
 videos = [entry for entry in entries if os.path.isfile(os.path.join(directory_path, entry))]
 
-model = YOLO("archive/RobotDetection_v2.pt")
+model = YOLO("../archive/RobotDetection_v2.pt")
 
 for video in videos:
     video_path = f"videos/{video}"

@@ -25,7 +25,7 @@ for match in data:
             if video["type"] == "youtube":
                 video_keys.append(video["key"])
 
-download_dir = "videos"
+download_dir = "../videos"
 
 for key in video_keys:
     try:

@@ -47,5 +47,5 @@ for epoch in range(30):
         f"rank1={rank1:.3f}"
     )
 
-torch.save(model.state_dict(), "robot_reid.pth")
+torch.save(model.state_dict(), "../robot_reid.pth")
 print("Saved model to robot_reid.pth")
