@@ -2,17 +2,17 @@
   "destination": ".",
   "data": ".",
   "epochs": 10,
-  "images": 100,
+  "images": 128,
   "batch": 8,
   "device": "cpu",
-  "pretrained": "False",
-  "verbose": "False",
-  "persist": "False",
+  "pretrained": false,
+  "verbose": false,
+  "persist": false,
   "workers": 8,
   "patience": 10,
   "project": "default",
   "model": "yolo26s",
   "p": 4,
   "k": 4,
-  "tracker": "bytetrack.yaml"
+  "tracker": "bytetrack"
 }

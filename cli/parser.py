@@ -140,8 +140,10 @@ def parse(args: list[str]) -> ParseResult:
 
                 # Tracker ("botsort" or "bytetrack")
                 case "-tr":
-                    if i + 1 >= len(options) or options[i + 1].startswith()
-                ")
+                    if i + 1 >= len(options) or options[i + 1].startswith("-"):
+                        raise ValueError(colored("Tracker is required", "red"))
+                    config["tracker"] = options[i + 1]
+                    i += 2
 
                 # Error case
                 case _:
@@ -157,55 +159,9 @@ def add_defaults(config: dict[str, Any]):
     with open("cli/default.json", "r") as f:
         defaults = json.load(f)
 
-    if "destination" not in config:
-        config["destination"] = defaults["destination"]
-
-    if "data" not in config:
-        config["data"] = defaults["data"]
-
-    if "epochs" not in config:
-        config["epochs"] = defaults["epochs"]
-
-    if "images" not in config:
-        config["images"] = defaults["images"]
-
-    if "batch" not in config:
-        config["batch"] = defaults["batch"]
-
-    if "device" not in config:
-        config["device"] = defaults["device"]
-
-    if "pretrained" not in config:
-        config["pretrained"] = defaults["pretrained"]
-
-    if "verbose" not in config:
-        config["verbose"] = defaults["verbose"]
-
-    if "workers" not in config:
-        config["workers"] = defaults["workers"]
-
-    if "patience" not in config:
-        config["patience"] = defaults["patience"]
-
-    if "project" not in config:
-        config["project"] = defaults["project"]
-
-    if "model" not in config:
-        config["model"] = defaults["model"]
-
-    if "p" not in config:
-        config["p"] = defaults["p"]
-
-    if "k" not in config:
-        config["k"] = defaults["k"]
-
-    if "persist" not in config:
-        config["persist"] = defaults["persist"]
-
-    if "tracker" not in config:
-        config["tracker"] = defaults["tracker"]
-        
-    for key in config:
+    for key in defaults:
+        if key not in config:
+            config[key] = defaults[key]
         print(colored(f"{key}:", "blue"), colored(f"{config[key]}", "green"))
 
     return config

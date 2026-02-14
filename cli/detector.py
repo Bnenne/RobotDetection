@@ -18,22 +18,25 @@ class Detector(BaseModelConfig):
 
         device = torch.device(options["device"])
 
+        print(colored("Loading model", "green"))
         model = YOLO(options["model"] + ".pt")
 
+        print(colored("Training started", "green"))
         model.train(
             data=options["data"],
             epochs=options["epochs"],
             imgsz=options["images"],
             batch=options["batch"],
             device=device,
-            project=options["destination"] + options["project"],
-            name=["robot_detector"],
+            project=f"{options["destination"]}/{options["project"]}",
+            name=options["project"],
             workers=options["workers"],
             patience=options["patience"],
             pretrained=options["pretrained"],
             verbose=options["verbose"]
         )
 
+        print(colored("Saving model", "green"))
         model.val()
 
         print(colored("Training completed", "green"))
@@ -41,10 +44,10 @@ class Detector(BaseModelConfig):
     def validate(self):
         options = self.options
 
-        model = YOLO(options["model"] + ",pt")
+        model = YOLO(options["model"] + ".pt")
 
         video_path = options["data"]
-        output_path = options["destination"] + options["project"]
+        output_path = f"{options["destination"]}/{options["project"]}"
 
         cap = cv2.VideoCapture(video_path)
 
@@ -55,15 +58,23 @@ class Detector(BaseModelConfig):
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
+        print(colored("Validating started", "green"))
+
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 break
 
+            frame_number = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
+            max_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+            frame_count = colored(f"Frame: {frame_number}/{max_frames}", "blue")
+            print(f"\r{frame_count}", end="", flush=True)
+
             results = model.track(
                 frame,
                 tracker=options["tracker"] + ".yaml",  # enables tracker
-                persist=True,
+                persist=options["persist"],
                 verbose=options["verbose"]
             )
 
@@ -74,4 +85,4 @@ class Detector(BaseModelConfig):
         cap.release()
         out.release()
 
-        print(f"Saved to {output_path}")
+        print(colored(f"Saved to {output_path}", "green"))
