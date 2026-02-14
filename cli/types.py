@@ -28,12 +28,14 @@ class ParseResult(BaseModel):
     options: dict[str, Any]
 
 class BaseModelConfig:
-    learning_rate: float = 1e-3
-    batch_size: int = 32
-    epochs: int = 10
+    action: Action = Action.train
+    options: dict[str, Any] = {}
 
-    def build(self, action, options):
+    def build(self, action: Action, options: dict[str, Any]):
         pass
 
-    def run(self):
+    def train(self):
+        pass
+
+    def validate(self):
         pass

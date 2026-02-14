@@ -17,7 +17,7 @@ def load_dataset(data_dir: str):
                              std=[0.229, 0.224, 0.225]),
     ])
 
-    train_ds = datasets.ImageFolder(f"../{data_dir}/train", transform=train_tfms)
-    val_ds   = datasets.ImageFolder(f"../{data_dir}/val", transform=val_tfms)
+    train_ds = datasets.ImageFolder(f"./{data_dir}/train", transform=train_tfms)
+    val_ds   = datasets.ImageFolder(f"./{data_dir}/val", transform=val_tfms)
 
     return train_ds, val_ds

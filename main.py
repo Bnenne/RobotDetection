@@ -1,4 +1,5 @@
 import sys
+from termcolor import colored
 
 from cli.parser import parse
 from cli.types import *
@@ -18,9 +19,16 @@ if model == Model.robot:
 elif model == Model.reid:
     model_config = ReID()
 else:
-    raise ValueError("Invalid model")
+    raise ValueError(colored("Invalid model", "red"))
 
 if not isinstance(model_config, BaseModelConfig):
-    raise ValueError("Invalid model config")
+    raise ValueError(colored("Invalid model config", "red"))
 
 model_config.build(action, options)
+
+if action == Action.train:
+    model_config.train()
+elif action == Action.val:
+    model_config.validate()
+else:
+    raise ValueError(colored("Invalid action", "red"))

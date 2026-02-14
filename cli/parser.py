@@ -1,27 +1,27 @@
-from sympy.strategies.core import switch
+import json
+from termcolor import colored
 
-from cli.types import *
+from .types import *
 
 
 def parse(args: list[str]) -> ParseResult:
-
     model: Model
     action: Action
 
     config = {}
 
     if len(args) < 2:
-        raise ValueError("Not enough arguments")
+        raise ValueError(colored("Not enough arguments", "red"))
 
     match args[0]:
         case "robot": model = Model.robot
         case "reid": model = Model.reid
-        case _: raise ValueError("Invalid model")
+        case _: raise ValueError(colored("Invalid model", "red"))
 
     match args[1]:
         case "train": action = Action.train
         case "val": action = Action.val
-        case _: raise ValueError("Invalid function")
+        case _: raise ValueError(colored("Invalid function", "red"))
 
     options = args[2:]
 
@@ -33,51 +33,51 @@ def parse(args: list[str]) -> ParseResult:
                 # Destination directory
                 case "-d":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Destination directory is required")
+                        raise ValueError(colored("Destination directory is required", "red"))
                     config["destination"] = options[i + 1]
                     i += 2
 
                 # Training set directory
                 case "-s":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Data set directory is required")
+                        raise ValueError(colored("Data set directory is required", "red"))
                     config["data"] = options[i + 1]
                     i += 2
 
                 # Epochs
                 case "-e":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Epochs is required")
+                        raise ValueError(colored("Epochs is required", "red"))
                     try:
                         config["epochs"] = int(options[i + 1])
                     except ValueError:
-                        raise ValueError("Epochs must be an integer")
+                        raise ValueError(colored("Epochs must be an integer", "red"))
                     i += 2
 
                 # Images
                 case "-i":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Images is required")
+                        raise ValueError(colored("Images is required", "red"))
                     try:
                         config["images"] = int(options[i + 1])
                     except ValueError:
-                        raise ValueError("Images must be an integer")
+                        raise ValueError(colored("Images must be an integer", "red"))
                     i += 2
 
                 # Batch
                 case "-b":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Batch is required")
+                        raise ValueError(colored("Batch is required", "red"))
                     try:
                         config["batch"] = int(options[i + 1])
                     except ValueError:
-                        raise ValueError("Batch must be an integer")
+                        raise ValueError(colored("Batch must be an integer", "red"))
                     i += 2
 
                 # Device
                 case "-dv":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Device is required")
+                        raise ValueError(colored("Device is required", "red"))
                     config["device"] = options[i + 1]
                     i += 2
 
@@ -94,41 +94,102 @@ def parse(args: list[str]) -> ParseResult:
                 # Workers
                 case "-w":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Workers is required")
+                        raise ValueError(colored("Workers is required", "red"))
                     try:
                         config["workers"] = int(options[i + 1])
                     except ValueError:
-                        raise ValueError("Workers must be an integer")
+                        raise ValueError(colored("Workers must be an integer", "red"))
                     i += 2
 
                 # Patience
                 case "-p":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Patience is required")
+                        raise ValueError(colored("Patience is required", "red"))
                     try:
                         config["patience"] = int(options[i + 1])
                     except ValueError:
-                        raise ValueError("Patience must be an integer")
+                        raise ValueError(colored("Patience must be an integer", "red"))
                     i += 2
 
                 # Project name
                 case "-n":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Project name is required")
+                        raise ValueError(colored("Project name is required", "red"))
                     config["project"] = options[i + 1]
                     i += 2
 
+                # Model (yolo26s, yolo11n, etc.)
                 case "-m":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
-                        raise ValueError("Model is required")
+                        raise ValueError(colored("Model is required", "red"))
                     config["model"] = options[i + 1]
+                    i += 2
+
+                # p and k values for PKSampler
+                case "-pk":
+                    if i + 2 >= len(options) or options[i + 1].startswith("-") or options[i + 2].startswith("-"):
+                        raise ValueError(colored("p and k values are required", "red"))
+                    config["p"] = int(options[i + 1])
+                    config["k"] = int(options[i + 2])
+                    i += 3
 
                 # Error case
                 case _:
-                    raise ValueError(f"Invalid argument {arg}")
+                    raise ValueError(colored(f"Invalid argument {arg}", "red"))
 
     return ParseResult(
         model=model,
         action=action,
         options=config,
     )
+
+def add_defaults(config: dict[str, Any]):
+    with open("cli/default.json", "r") as f:
+        defaults = json.load(f)
+
+    if "destination" not in config:
+        config["destination"] = defaults["destination"]
+
+    if "data" not in config:
+        config["data"] = defaults["data"]
+
+    if "epochs" not in config:
+        config["epochs"] = defaults["epochs"]
+
+    if "images" not in config:
+        config["images"] = defaults["images"]
+
+    if "batch" not in config:
+        config["batch"] = defaults["batch"]
+
+    if "device" not in config:
+        config["device"] = defaults["device"]
+
+    if "pretrained" not in config:
+        config["pretrained"] = defaults["pretrained"]
+
+    if "verbose" not in config:
+        config["verbose"] = defaults["verbose"]
+
+    if "workers" not in config:
+        config["workers"] = defaults["workers"]
+
+    if "patience" not in config:
+        config["patience"] = defaults["patience"]
+
+    if "project" not in config:
+        config["project"] = defaults["project"]
+
+    if "model" not in config:
+        config["model"] = defaults["model"]
+
+    if "p" not in config:
+        config["p"] = defaults["p"]
+
+    if "k" not in config:
+        config["k"] = defaults["k"]
+        
+    for key in config:
+        print(colored(f"{key}:", "blue"), colored(f"{config[key]}", "green"))
+
+    return config
