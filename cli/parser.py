@@ -82,7 +82,7 @@ def parse(args: list[str]) -> ParseResult:
                     i += 2
 
                 # Pretrained
-                case "-p":
+                case "-pr":
                     config["pretrained"] = True
                     i += 1
 
@@ -132,6 +132,16 @@ def parse(args: list[str]) -> ParseResult:
                     config["p"] = int(options[i + 1])
                     config["k"] = int(options[i + 2])
                     i += 3
+
+                # Persist
+                case "-ps":
+                    config["persist"] = True
+                    i += 1
+
+                # Tracker ("botsort" or "bytetrack")
+                case "-tr":
+                    if i + 1 >= len(options) or options[i + 1].startswith()
+                ")
 
                 # Error case
                 case _:
@@ -188,6 +198,12 @@ def add_defaults(config: dict[str, Any]):
 
     if "k" not in config:
         config["k"] = defaults["k"]
+
+    if "persist" not in config:
+        config["persist"] = defaults["persist"]
+
+    if "tracker" not in config:
+        config["tracker"] = defaults["tracker"]
         
     for key in config:
         print(colored(f"{key}:", "blue"), colored(f"{config[key]}", "green"))

@@ -7,10 +7,12 @@
   "device": "cpu",
   "pretrained": "False",
   "verbose": "False",
+  "persist": "False",
   "workers": 8,
   "patience": 10,
   "project": "default",
   "model": "yolo26s",
   "p": 4,
-  "k": 4
+  "k": 4,
+  "tracker": "bytetrack.yaml"
 }
