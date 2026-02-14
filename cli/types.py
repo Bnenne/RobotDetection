@@ -34,3 +34,6 @@ class BaseModelConfig:
 
     def build(self, action, options):
         pass
+
+    def run(self):
+        pass

@@ -1,6 +1,6 @@
 from torchvision import datasets, transforms
 
-def load_dataset():
+def load_dataset(data_dir: str):
     train_tfms = transforms.Compose([
         transforms.Resize((256, 128)),
         transforms.RandomHorizontalFlip(),
@@ -17,7 +17,7 @@ def load_dataset():
                              std=[0.229, 0.224, 0.225]),
     ])
 
-    train_ds = datasets.ImageFolder("../reid_dataset/train", transform=train_tfms)
-    val_ds   = datasets.ImageFolder("../reid_dataset/val", transform=val_tfms)
+    train_ds = datasets.ImageFolder(f"../{data_dir}/train", transform=train_tfms)
+    val_ds   = datasets.ImageFolder(f"../{data_dir}/val", transform=val_tfms)
 
     return train_ds, val_ds

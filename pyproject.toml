@@ -10,7 +10,9 @@ dependencies = [
     "pytube>=15.0.0",
     "pytubefix>=10.3.6",
     "rfdetr>=1.4.1",
+    "termcolor>=3.3.0",
     "torchreid>=0.2.5",
     "ultralytics>=8.4.4",
+    "valkey>=6.1.1",
     "wandb>=0.24.2",
 ]

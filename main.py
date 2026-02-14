@@ -14,9 +14,9 @@ action = parsed.action
 options = parsed.options
 
 if model == Model.robot:
-    model_config = Detector
+    model_config = Detector()
 elif model == Model.reid:
-    model_config = ReID
+    model_config = ReID()
 else:
     raise ValueError("Invalid model")
 

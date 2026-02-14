@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import cv2
 
-model = YOLO("RobotDetection_v2.pt")
+model = YOLO("best.pt")
 
 video_path = "../archive/test_track.mp4"
 output_path = "test_track_tracked.mp4"
