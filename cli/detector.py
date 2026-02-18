@@ -1,6 +1,6 @@
 from typing import Any
 from ultralytics import YOLO
-import cv2, torch, os, wandb
+import cv2, torch, os
 from termcolor import colored
 
 from cli.parser import add_defaults
@@ -16,12 +16,6 @@ class Detector(BaseModelConfig):
         options = self.options
 
         device = torch.device(options["device"])
-
-        wandb.init(
-            project=options["project"],
-            name=options["project"],
-            config=options
-        )
 
         print(colored("Loading model", "green"))
         model = YOLO(options["model"])
@@ -39,13 +33,10 @@ class Detector(BaseModelConfig):
             patience=options["patience"],
             pretrained=options["pretrained"],
             verbose=options["verbose"],
-            wandb=True
         )
 
         print(colored("Saving model", "green"))
         model.val()
-
-        wandb.finish()
 
         print(colored("Training completed", "green"))
 
