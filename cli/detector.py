@@ -55,8 +55,9 @@ class Detector(BaseModelConfig):
 
         output_path = f"{options["destination"]}/{options["project"]}.mp4"
 
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
+        destination_dir = options["destination"]
+
+        os.makedirs(destination_dir, exist_ok=True)
 
         cap = cv2.VideoCapture(video_path)
 
