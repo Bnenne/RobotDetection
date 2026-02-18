@@ -3,7 +3,6 @@ from typing import Any
 import valkey
 import numpy as np
 from numpy import dtype, float64, ndarray
-from numpy._core.multiarray import _ScalarT
 from termcolor import colored
 
 def singleton(cls):
