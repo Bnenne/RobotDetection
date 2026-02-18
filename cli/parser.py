@@ -155,7 +155,7 @@ def parse(args: list[str]) -> ParseResult:
         options=config,
     )
 
-def add_defaults(config: dict[str, Any]):
+def add_defaults(config: dict[str, Any]) -> dict[str, Any]:
     with open("cli/default.json", "r") as f:
         defaults = json.load(f)
 

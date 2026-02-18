@@ -30,13 +30,15 @@ def rank1_accuracy(emb, labels):
 
     return correct / len(labels)
 
-def cache_embeddings(emb, labels, dataset, ttl=600):
+def cache_embeddings(emb, labels, dataset):
     redis = Redis()
 
     emb_np = emb.numpy().astype(np.float32)
     labels_np = labels.numpy()
 
-    redis.store_vector(emb_np, labels_np, dataset, ttl=ttl)
+    for vec, label in zip(emb_np, labels_np):
+        team_number = dataset.classes[int(label)]
+        redis.update_prototype(team_number, vec, alpha=0.1)
 
 def validate(model, loader, device, cache_ttl=600):
     emb, labels = extract_embeddings(model, loader, device)

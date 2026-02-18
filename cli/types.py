@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 class Action(Enum):
     train = (1, "Training")
-    val = (2, "Validating")
+    val = (2, "Validation")
 
-    def __new__(cls, code: int, label: str):
+    def __new__(cls, code: int, label: str) -> "Action":
         obj = object.__new__(cls)
         obj._value_ = code
         obj.label = label
@@ -16,7 +16,7 @@ class Model(Enum):
     robot = (1, "RobotDetection")
     reid = (2, "ReID")
 
-    def __new__(cls, code: int, label: str):
+    def __new__(cls, code: int, label: str) -> "Model":
         obj = object.__new__(cls)
         obj._value_ = code
         obj.label = label
@@ -31,11 +31,11 @@ class BaseModelConfig:
     action: Action = Action.train
     options: dict[str, Any] = {}
 
-    def build(self, action: Action, options: dict[str, Any]):
+    def build(self, action: Action, options: dict[str, Any]) -> None:
         pass
 
-    def train(self):
+    def train(self) -> None:
         pass
 
-    def validate(self):
+    def validate(self) -> None:
         pass

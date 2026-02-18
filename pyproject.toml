@@ -16,3 +16,10 @@ dependencies = [
     "valkey>=6.1.1",
     "wandb>=0.24.2",
 ]
+
+[project.scripts]
+ml = "main:main"
+
+[tool.setuptools]
+packages = ["reid", "cli", "redis"]
+py-modules = ["main"]

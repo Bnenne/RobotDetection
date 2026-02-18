@@ -1,6 +1,6 @@
 from torchvision import datasets, transforms
 
-def load_dataset(data_dir: str):
+def load_dataset(data_dir: str) -> tuple[datasets.ImageFolder, datasets.ImageFolder]:
     train_tfms = transforms.Compose([
         transforms.Resize((256, 128)),
         transforms.RandomHorizontalFlip(),

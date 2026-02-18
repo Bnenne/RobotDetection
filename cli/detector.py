@@ -1,7 +1,6 @@
 from typing import Any
 from ultralytics import YOLO
-import cv2
-import torch
+import cv2, torch, os
 from termcolor import colored
 
 from cli.parser import add_defaults
@@ -9,17 +8,17 @@ from cli.types import BaseModelConfig, Action
 
 
 class Detector(BaseModelConfig):
-    def build(self, action: Action, options: dict[str, Any]):
+    def build(self, action: Action, options: dict[str, Any]) -> None:
         self.action = action
         self.options = add_defaults(options)
 
-    def train(self):
+    def train(self) -> None:
         options = self.options
 
         device = torch.device(options["device"])
 
         print(colored("Loading model", "green"))
-        model = YOLO(options["model"] + ".pt")
+        model = YOLO(options["model"])
 
         print(colored("Training started", "green"))
         model.train(
@@ -44,10 +43,20 @@ class Detector(BaseModelConfig):
     def validate(self):
         options = self.options
 
-        model = YOLO(options["model"] + ".pt")
+        model = YOLO(options["model"])
 
         video_path = options["data"]
+
+        if not os.path.isfile(video_path):
+            raise ValueError(colored("Video file does not exist", "red"))
+
+        if not video_path.endswith(".mp4"):
+            raise ValueError(colored("Video path must end with .mp4", "red"))
+
         output_path = f"{options["destination"]}/{options["project"]}"
+
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
 
         cap = cv2.VideoCapture(video_path)
 
