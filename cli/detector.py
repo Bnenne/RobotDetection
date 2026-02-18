@@ -53,7 +53,7 @@ class Detector(BaseModelConfig):
         if not video_path.endswith(".mp4"):
             raise ValueError(colored("Video path must end with .mp4", "red"))
 
-        output_path = f"{options["destination"]}/{options["project"]}"
+        output_path = f"{options["destination"]}/{options["project"]}.mp4"
 
         if not os.path.exists(output_path):
             os.makedirs(output_path)
