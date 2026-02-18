@@ -53,11 +53,14 @@ class Detector(BaseModelConfig):
         if not video_path.endswith(".mp4"):
             raise ValueError(colored("Video path must end with .mp4", "red"))
 
-        output_path = f"{options["destination"]}/{options["project"]}.mp4"
-
         destination_dir = options["destination"]
 
         os.makedirs(destination_dir, exist_ok=True)
+
+        output_path = os.path.join(
+            destination_dir,
+            f"{options['project']}.mp4"
+        )
 
         cap = cv2.VideoCapture(video_path)
 
