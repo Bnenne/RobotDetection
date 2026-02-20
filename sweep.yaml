@@ -17,7 +17,7 @@ parameters:
     min: 0.85
     max: 0.98
   batch:
-    values: [32, 48, 64]
+    values: [16, 24, 32]
   optimizer:
     values: ["SGD", "AdamW"]
   device:

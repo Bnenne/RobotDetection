@@ -42,7 +42,8 @@ class Detector(BaseModelConfig):
             lr0=options["lr0"],
             weight_decay=options["weight_decay"],
             momentum=options["momentum"],
-            cos_lr=options["cos_lr"]
+            cos_lr=options["cos_lr"],
+            optimizer=options["optimizer"]
         )
 
         print(colored("Saving model", "green"))
