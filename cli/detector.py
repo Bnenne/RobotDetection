@@ -1,5 +1,5 @@
 from typing import Any
-from ultralytics import YOLO
+from ultralytics import YOLO, settings
 import cv2, torch, os
 from termcolor import colored
 
@@ -11,6 +11,8 @@ class Detector(BaseModelConfig):
     def build(self, action: Action, options: dict[str, Any]) -> None:
         self.action = action
         self.options = add_defaults(options)
+
+        settings.update({"wandb": True})
 
     def train(self) -> None:
         options = self.options
