@@ -12,6 +12,8 @@ class Detector(BaseModelConfig):
         self.action = action
         self.options = add_defaults(options)
 
+        settings.update({"wandb": False})
+
     def train(self) -> None:
         options = self.options
 
