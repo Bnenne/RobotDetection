@@ -14,7 +14,7 @@ class Detector(BaseModelConfig):
 
         settings.update({"wandb": False})
 
-    def train(self) -> None:
+    def train(self) -> dict[str, Any]:
         options = self.options
 
         device = options["device"]
@@ -27,7 +27,8 @@ class Detector(BaseModelConfig):
         model = YOLO(options["model"])
 
         print(colored("Training started", "green"))
-        model.train(
+
+        results = model.train(
             data=options["data"],
             epochs=options["epochs"],
             imgsz=options["images"],
@@ -46,10 +47,16 @@ class Detector(BaseModelConfig):
             optimizer=options["optimizer"]
         )
 
-        print(colored("Saving model", "green"))
-        model.val()
-
         print(colored("Training completed", "green"))
+
+        metrics = results
+
+        return {
+            "metrics/mAP50": metrics.get("metrics/mAP50"),
+            "metrics/mAP50-95": metrics.get("metrics/mAP50-95"),
+            "metrics/precision": metrics.get("metrics/precision"),
+            "metrics/recall": metrics.get("metrics/recall"),
+        }
 
     def validate(self):
         options = self.options

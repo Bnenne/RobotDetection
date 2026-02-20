@@ -1,15 +1,19 @@
 import subprocess
 import sys
-import os
+
+from termcolor import colored
+
 import wandb
-from pathlib import Path
-import csv
+from cli.detector import Detector
+
+from cli.parser import parse
+from cli.reid import ReID
+from cli.types import Model, BaseModelConfig, Action
 
 run = wandb.init()
 c = run.config
 
-cmd = [
-    sys.executable, "main.py",
+args = [
     "robot", "train",
     "-m", "yolo26s.pt",
     "-s", "dataset.yaml",
@@ -27,25 +31,32 @@ cmd = [
     "-v", "-cl"
 ]
 
-result = subprocess.run(cmd)
+parsed = parse(args)
 
-results_path = Path("runs") / str(c.get("project")) / "train" / "results.csv"
+model = parsed.model
+action = parsed.action
+options = parsed.options
 
-if results_path.exists():
-    with open(results_path) as f:
-        reader = csv.DictReader(f)
-        for step, row in enumerate(reader):
-            log_dict = {}
-            for k, v in row.items():
-                v = v.strip()
-                if not v:
-                    continue
-                try:
-                    log_dict[k.strip()] = float(v)
-                except ValueError:
-                    continue
-            if log_dict:
-                run.log(log_dict, step=step)
+if model == Model.robot:
+    model_config = Detector()
+elif model == Model.reid:
+    model_config = ReID()
+else:
+    raise ValueError(colored("Invalid model", "red"))
 
+print(colored(f"Running {action.label} on {model.label}", "green"))
+
+if not isinstance(model_config, BaseModelConfig):
+    raise ValueError(colored("Invalid model config", "red"))
+
+model_config.build(action, options)
+
+if action == Action.train:
+    metrics = model_config.train()
+elif action == Action.val:
+    metrics = model_config.validate()
+else:
+    raise ValueError(colored("Invalid action", "red"))
+
+wandb.log(metrics)
 run.finish()
-sys.exit(result.returncode)
