@@ -28,7 +28,7 @@ class Detector(BaseModelConfig):
 
         print(colored("Training started", "green"))
 
-        results = model.train(
+        model.train(
             data=options["data"],
             epochs=options["epochs"],
             imgsz=options["images"],
@@ -49,15 +49,11 @@ class Detector(BaseModelConfig):
 
         print(colored("Training completed", "green"))
 
-        metrics = results.box
-
-        print(colored(metrics, "green"))
+        metrics = model.trainer.metrics
 
         return {
-            "metrics/mAP50": metrics.map50,
-            "metrics/mAP50-95": metrics.map,
-            "metrics/precision": metrics.mp,
-            "metrics/recall": metrics.mr,
+            k: v for k, v in metrics.items()
+            if v is not None and isinstance(v, (int, float))
         }
 
     def validate(self):
