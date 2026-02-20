@@ -48,15 +48,16 @@ class Detector(BaseModelConfig):
         )
 
         print(colored("Training completed", "green"))
-        metrics = model.val(iou=0.5, save=True)
+
+        metrics = results.box
 
         print(colored(metrics, "green"))
 
         return {
-            # "metrics/mAP50": metrics.map50,
-            # "metrics/mAP50-95": metrics.map,
-            # "metrics/precision": metrics.mp,
-            # "metrics/recall": metrics.mr,
+            "metrics/mAP50": metrics.map50,
+            "metrics/mAP50-95": metrics.map,
+            "metrics/precision": metrics.mp,
+            "metrics/recall": metrics.mr,
         }
 
     def validate(self):
