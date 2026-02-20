@@ -1,6 +1,6 @@
 method: bayes
 
-program: main.py
+program: run.py
 
 metric:
   name: metrics/mAP50-95(B)
@@ -38,33 +38,3 @@ command:
   - uv
   - run
   - ${program}
-  - robot
-  - train
-  - -m
-  - yolo26s.pt
-  - -s
-  - dataset.yaml
-  - -lr
-  - ${lr0}
-  - -wd
-  - ${weight_decay}
-  - -mm
-  - ${momentum}
-  - -b
-  - ${batch}
-  - -opt
-  - ${optimizer}
-  - -dv
-  - ${device}
-  - -i
-  - ${imgsz}
-  - -e
-  - ${epochs}
-  - -w
-  - ${workers}
-  - -p
-  - ${patience}
-  - -pr
-  - ${project}
-  - -v
-  - -cl
