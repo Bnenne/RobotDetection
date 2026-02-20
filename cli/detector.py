@@ -17,7 +17,7 @@ class Detector(BaseModelConfig):
     def train(self) -> None:
         options = self.options
 
-        device = torch.device(options["device"])
+        device = options["device"]
 
         print(colored("Loading model", "green"))
         model = YOLO(options["model"])
