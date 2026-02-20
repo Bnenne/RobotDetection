@@ -1,5 +1,8 @@
 method: bayes
 
+interpreter: uv run
+program: main.py
+
 metric:
   name: metrics/mAP50-95(B)
   goal: maximize
@@ -43,9 +46,8 @@ parameters:
 
 command:
   - ${env}
-  - uv
-  - run
-  - main.py
+  - ${interpreter}
+  - ${program}
   - robot
   - train
   - -m
