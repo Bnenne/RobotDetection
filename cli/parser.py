@@ -185,6 +185,7 @@ def parse(args: list[str]) -> ParseResult:
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
                         raise ValueError(colored("Optimizer is required", "red"))
                     config["optimizer"] = options[i + 1]
+                    i += 2
 
                 # Error case
                 case _:

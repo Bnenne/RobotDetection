@@ -28,11 +28,9 @@ cmd = [
     "-e",  str(c.epochs),
     "-w",  str(c.workers),
     "-p",  str(c.patience),
-    "-pr", str(c.project),
-    "-v", "-cl",
+    "-n", str(c.project),
+    "-v", "-cl"
 ]
-
-print(cmd)
 result = subprocess.run(cmd, env=child_env)
 
 # YOLO saves results to runs/<project>/train/results.csv — log final metrics to wandb
