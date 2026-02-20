@@ -51,6 +51,8 @@ class Detector(BaseModelConfig):
 
         metrics = results
 
+        print(colored(metrics, "green"))
+
         return {
             "metrics/mAP50": metrics.get("metrics/mAP50"),
             "metrics/mAP50-95": metrics.get("metrics/mAP50-95"),
