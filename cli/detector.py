@@ -33,6 +33,10 @@ class Detector(BaseModelConfig):
             patience=options["patience"],
             pretrained=options["pretrained"],
             verbose=options["verbose"],
+            lr0=options["lr0"],
+            weight_decay=options["weight_decay"],
+            momentum=options["momentum"],
+            cos_lr=options["cos_lr"]
         )
 
         print(colored("Saving model", "green"))

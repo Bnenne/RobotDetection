@@ -17,6 +17,30 @@ parameters:
     min: 0.85
     max: 0.98
 
+  batch:
+    values: [ 32, 48, 64 ]
+
+  optimizer:
+    values: [ "SGD", "AdamW" ]
+
+  device:
+    values: [ "cuda" ]
+
+  imgsz:
+    values: [ 640 ]
+
+  epochs:
+    values: [ 40 ]
+
+  workers:
+    values: [ 8 ]
+
+  patience:
+    values: [ 20 ]
+
+  project:
+    value: [ "yolo26-sweep" ]
+
 command:
   - ${env}
   - ml
@@ -26,9 +50,26 @@ command:
   - yolo26s.pt
   - -s
   - dataset.yaml
-  - --lr0
+  - -lr
   - ${lr0}
-  - --weight_decay
+  - -wd
   - ${weight_decay}
-  - --momentum
+  - -mm
   - ${momentum}
+  - -b
+  - ${batch}
+  - -opt
+  - ${optimizer}
+  - -dv
+  - ${device}
+  - -i
+  - ${imgsz}
+  - -e
+  - ${epochs}
+  - -w
+  - ${workers}
+  - -p
+  - ${patience}
+  - -pr
+  - -v
+  - -cl

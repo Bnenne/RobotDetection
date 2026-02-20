@@ -14,5 +14,10 @@
   "model": "yolo26s",
   "p": 4,
   "k": 4,
-  "tracker": "bytetrack"
+  "tracker": "bytetrack",
+  "lr0": 0.0005,
+  "weight_decay": 0.0001,
+  "momentum": 0.85,
+  "optimizer": "auto",
+  "cos_lr": false
 }

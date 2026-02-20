@@ -91,6 +91,11 @@ def parse(args: list[str]) -> ParseResult:
                     config["verbose"] = True
                     i += 1
 
+                # Cosine learning rate
+                case "-cl":
+                    config["cos_lr"] = True
+                    i += 1
+
                 # Workers
                 case "-w":
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
@@ -144,6 +149,42 @@ def parse(args: list[str]) -> ParseResult:
                         raise ValueError(colored("Tracker is required", "red"))
                     config["tracker"] = options[i + 1]
                     i += 2
+
+                # Learning rate
+                case "-lr":
+                    if i + 1 >= len(options) or options[i + 1].startswith("-"):
+                        raise ValueError(colored("Learning rate is required", "red"))
+                    try:
+                        config["lr0"] = int(options[i + 1])
+                    except ValueError:
+                        raise ValueError(colored("Learning rate must be an integer", "red"))
+                    i += 2
+
+                # Weighted decay
+                case "-wd":
+                    if i + 1 >= len(options) or options[i + 1].startswith("-"):
+                        raise ValueError(colored("Weight decay is required", "red"))
+                    try:
+                        config["weight_decay"] = int(options[i + 1])
+                    except ValueError:
+                        raise ValueError(colored("Weight decay must be an integer", "red"))
+                    i += 2
+
+                # Weighted decay
+                case "-mm":
+                    if i + 1 >= len(options) or options[i + 1].startswith("-"):
+                        raise ValueError(colored("Momentum is required", "red"))
+                    try:
+                        config["momentum"] = int(options[i + 1])
+                    except ValueError:
+                        raise ValueError(colored("Momentum must be an integer", "red"))
+                    i += 2
+
+                # Optimizer
+                case "-opt":
+                    if i + 1 >= len(options) or options[i + 1].startswith("-"):
+                        raise ValueError(colored("Optimizer is required", "red"))
+                    config["optimizer"] = options[i + 1]
 
                 # Error case
                 case _:
