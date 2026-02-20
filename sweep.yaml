@@ -1,6 +1,5 @@
 method: bayes
 
-interpreter: uv run
 program: main.py
 
 metric:
@@ -11,42 +10,33 @@ parameters:
   lr0:
     min: 0.0005
     max: 0.02
-
   weight_decay:
     min: 0.0001
     max: 0.001
-
   momentum:
     min: 0.85
     max: 0.98
-
   batch:
     values: [32, 48, 64]
-
   optimizer:
     values: ["SGD", "AdamW"]
-
   device:
     value: "cuda"
-
   imgsz:
     value: 640
-
   epochs:
     value: 40
-
   workers:
     value: 8
-
   patience:
     value: 20
-
   project:
     value: "yolo26-sweep"
 
 command:
   - ${env}
-  - ${interpreter}
+  - uv
+  - run
   - ${program}
   - robot
   - train
