@@ -155,9 +155,9 @@ def parse(args: list[str]) -> ParseResult:
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
                         raise ValueError(colored("Learning rate is required", "red"))
                     try:
-                        config["lr0"] = int(options[i + 1])
+                        config["lr0"] = float(options[i + 1])
                     except ValueError:
-                        raise ValueError(colored("Learning rate must be an integer", "red"))
+                        raise ValueError(colored("Learning rate must be an number", "red"))
                     i += 2
 
                 # Weighted decay
@@ -165,9 +165,9 @@ def parse(args: list[str]) -> ParseResult:
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
                         raise ValueError(colored("Weight decay is required", "red"))
                     try:
-                        config["weight_decay"] = int(options[i + 1])
+                        config["weight_decay"] = float(options[i + 1])
                     except ValueError:
-                        raise ValueError(colored("Weight decay must be an integer", "red"))
+                        raise ValueError(colored("Weight decay must be an number", "red"))
                     i += 2
 
                 # Weighted decay
@@ -175,9 +175,9 @@ def parse(args: list[str]) -> ParseResult:
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
                         raise ValueError(colored("Momentum is required", "red"))
                     try:
-                        config["momentum"] = int(options[i + 1])
+                        config["momentum"] = float(options[i + 1])
                     except ValueError:
-                        raise ValueError(colored("Momentum must be an integer", "red"))
+                        raise ValueError(colored("Momentum must be an number", "red"))
                     i += 2
 
                 # Optimizer
