@@ -19,6 +19,10 @@ class Detector(BaseModelConfig):
 
         device = options["device"]
 
+        if device == "cuda" and not torch.cuda.is_available():
+            print(colored("CUDA not available, switching to CPU", "yellow"))
+            device = "cpu"
+
         print(colored("Loading model", "green"))
         model = YOLO(options["model"])
 
@@ -29,7 +33,7 @@ class Detector(BaseModelConfig):
             imgsz=options["images"],
             batch=options["batch"],
             device=device,
-            project=f"{options["destination"]}/{options["project"]}",
+            project=os.path.join(options["destination"], options["project"]),
             name=options["project"],
             workers=options["workers"],
             patience=options["patience"],
