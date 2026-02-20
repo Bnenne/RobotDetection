@@ -42,7 +42,8 @@ parameters:
     value: [ "yolo26-sweep" ]
 
 command:
-  - ${env}
+  - uv
+  - run
   - main.py
   - robot
   - train
