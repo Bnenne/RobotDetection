@@ -18,28 +18,28 @@ parameters:
     max: 0.98
 
   batch:
-    values: [ 32, 48, 64 ]
+    values: [32, 48, 64]
 
   optimizer:
-    values: [ "SGD", "AdamW" ]
+    values: ["SGD", "AdamW"]
 
   device:
-    values: [ "cuda" ]
+    value: "cuda"
 
   imgsz:
-    values: [ 640 ]
+    value: 640
 
   epochs:
-    values: [ 40 ]
+    value: 40
 
   workers:
-    values: [ 8 ]
+    value: 8
 
   patience:
-    values: [ 20 ]
+    value: 20
 
   project:
-    value: [ "yolo26-sweep" ]
+    value: "yolo26-sweep"
 
 command:
   - uv
@@ -72,5 +72,6 @@ command:
   - -p
   - ${patience}
   - -pr
+  - ${project}
   - -v
   - -cl
