@@ -1,5 +1,4 @@
 method: bayes
-
 program: run.py
 
 metric:
@@ -8,28 +7,40 @@ metric:
 
 parameters:
   lr0:
+    distribution: log_uniform_values
     min: 0.0005
-    max: 0.02
+    max: 0.01
+
   weight_decay:
+    distribution: log_uniform_values
     min: 0.0001
     max: 0.001
+
   momentum:
-    min: 0.85
-    max: 0.98
+    min: 0.88
+    max: 0.97
+
   batch:
-    values: [16, 24, 32]
+    values: [16, 24]
+
   optimizer:
     values: ["SGD", "AdamW"]
+
   device:
     value: "cuda"
+
   imgsz:
     value: 640
+
   epochs:
-    value: 40
+    value: 50
+
   workers:
-    value: 8
+    value: 4
+
   patience:
-    value: 20
+    value: 25
+
   project:
     value: "yolo26-sweep"
 
