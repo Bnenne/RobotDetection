@@ -9,6 +9,32 @@ CLI for training and testing Robot Detection and Re-Identification models
 To use the project you can download the release, unzip the file, then run the executable as a CLI, use ```main.exe --help``` to get started.
 
 When training a model with ```robot``` make sure your data is in the correct format (e.g. yolo26, yolo11, yolo8, etc.)
+When traing a model with ```reid``` make sure your data is fomatted as:
+dataset/
+├── train/
+│   ├── robot_001/
+│   │   ├── 0001.png
+│   │   ├── 0002.png
+│   │   ├── 0003.png
+│   │   └── ...
+│   │
+│   ├── robot_002/
+│   │   ├── 0001.png
+│   │   ├── 0002.png
+│   │   └── ...
+│   │
+│   └── ...
+│
+└── val/
+    ├── robot_001/
+    │   ├── 0001.png
+    │   └── ...
+    │
+    ├── robot_002/
+    │   ├── 0001.png
+    │   └── ...
+    │
+    └── ...
 
 # Notes
 The full model I use in my demos videos is large and computationally intensive.
