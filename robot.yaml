@@ -1,5 +1,6 @@
 method: bayes
 program: run.py
+project: RobotDetection
 
 metric:
   name: metrics/mAP50-95(B)
