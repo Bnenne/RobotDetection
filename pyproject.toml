@@ -22,4 +22,4 @@ ml = "main:main"
 
 [tool.setuptools]
 packages = ["reid", "cli", "redis"]
-py-modules = ["main"]
+py-modules = ["main", "help"]

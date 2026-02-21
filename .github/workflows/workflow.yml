@@ -1,4 +1,4 @@
-name: Build Windows App (uv)
+name: Build and Test Windows App (uv)
 
 on:
   push:
@@ -23,13 +23,17 @@ jobs:
         run: |
           uv sync
 
-      - name: Install PyInstaller
+      - name: Add PyInstaller
         run: |
           uv add pyinstaller
 
       - name: Build application
         run: |
           uv run pyinstaller main.py
+
+      - name: Test executable
+        run: |
+          ./dist/main/main.exe --help
 
       - name: Zip dist folder
         run: |
