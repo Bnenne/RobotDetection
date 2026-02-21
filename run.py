@@ -1,6 +1,3 @@
-import subprocess
-import sys
-
 from termcolor import colored
 
 import wandb
@@ -10,7 +7,7 @@ from cli.parser import parse
 from cli.reid import ReID
 from cli.types import Model, BaseModelConfig, Action
 
-run = wandb.init()
+run = wandb.init(project=wandb.config.project)
 c = run.config
 
 if str(c.model) == "robot":
@@ -74,4 +71,4 @@ else:
     raise ValueError(colored("Invalid action", "red"))
 
 wandb.log(metrics)
-run.finish()
+run.finish(0)
