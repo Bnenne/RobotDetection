@@ -1,5 +1,5 @@
 from typing import Any
-import torch, wandb, os
+import torch, os
 from torch.utils.data import DataLoader
 from termcolor import colored
 
@@ -96,20 +96,6 @@ class ReID(BaseModelConfig):
 
         print(colored(f"Saved best model to {best_path}", "green"))
         print(colored(f"Saved last model to {last_path}", "green"))
-
-        best_artifact = wandb.Artifact(
-            name=f"{options['project']}-best",
-            type="model"
-        )
-        best_artifact.add_file(best_path)
-        wandb.log_artifact(best_artifact)
-
-        last_artifact = wandb.Artifact(
-            name=f"{options['project']}-last",
-            type="model"
-        )
-        last_artifact.add_file(last_path)
-        wandb.log_artifact(last_artifact)
 
         return {
             "final_rank1": rank1,

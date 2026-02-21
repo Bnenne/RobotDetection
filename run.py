@@ -25,7 +25,7 @@ if str(c.model) == "robot":
         "-w",  str(c.workers),
         "-p",  str(c.patience),
         "-n", str(c.project),
-        "-v", "-cl"
+        "-v", "-cl",
     ]
 elif str(c.model) == "reid":
     args = [
@@ -38,6 +38,7 @@ elif str(c.model) == "reid":
         "-dv", str(c.device),
         "-n", str(c.project),
         "-d", str(c.destination),
+        "-p",  str(c.patience),
     ]
 else:
     raise ValueError(colored("Invalid model", "red"))

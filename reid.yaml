@@ -1,7 +1,8 @@
-method: bayes
-program: run.py
-project: RobotReID
+method: bayes # Bayesian optimization
+program: run.py # Program entry point
+project: RobotReID # Project name
 
+# Define search space
 metric:
   name: rank1
   goal: maximize
@@ -39,9 +40,11 @@ parameters:
   model:
     value: "reid"
 
+  patience:
+    value: 5
+
 command:
   - ${env}
   - uv
   - run
   - ${program}
-  - RobotReID
