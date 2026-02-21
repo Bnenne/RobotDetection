@@ -44,6 +44,8 @@ elif str(c.model) == "reid":
         "-n", str(c.project),
         "-d", str(c.destination),
     ]
+else:
+    raise ValueError(colored("Invalid model", "red"))
 
 parsed = parse(args)
 
