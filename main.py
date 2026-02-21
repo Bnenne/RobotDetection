@@ -10,7 +10,7 @@ from help import HELP_TEXT
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:
         print(HELP_TEXT)
-        exit(0)
+        sys.exit(0)
 
     args = sys.argv[1:]
 
