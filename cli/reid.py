@@ -1,5 +1,5 @@
 from typing import Any
-import torch
+import torch, wandb, os
 from torch.utils.data import DataLoader
 from termcolor import colored
 
@@ -17,7 +17,8 @@ class ReID(BaseModelConfig):
         self.action = action
         self.options = add_defaults(options)
 
-    def train(self) -> None:
+    def train(self) -> dict[str, float]:
+        global rank1, avg_loss, epoch
         options = self.options
         device = torch.device(options["device"])
 
@@ -37,14 +38,17 @@ class ReID(BaseModelConfig):
         )
 
         model = Model(num_classes=len(train_ds.classes)).to(device)
-        optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
+        optimizer = torch.optim.Adam(
+            model.parameters(),
+            lr=options.get("lr", 3e-4)
+        )
 
         best_rank1 = 0.0
         best_state = None
 
         for epoch in range(options["epochs"]):
             model.train()
-            total_loss = 0
+            total_loss = 0.0
 
             for imgs, labels in train_loader:
                 imgs = imgs.to(device)
@@ -59,6 +63,7 @@ class ReID(BaseModelConfig):
 
                 total_loss += loss.item()
 
+            avg_loss = total_loss / len(train_loader)
             rank1, _ = validate(model, val_loader, device)
 
             if rank1 > best_rank1:
@@ -67,16 +72,47 @@ class ReID(BaseModelConfig):
 
             print(
                 colored(f"Epoch {epoch}: ", "blue"),
-                colored(f"train_loss={total_loss:.3f} ", "yellow"),
-                colored(f"rank1={rank1:.3f}", "green")
+                colored(f"train_loss={avg_loss:.4f} ", "yellow"),
+                colored(f"rank1={rank1:.4f}", "green")
             )
 
-        # Save best model
-        save_path = f"../{options['destination']}/{options['project']}.pth"
+        save_dir = f"../{options['destination']}"
+        os.makedirs(save_dir, exist_ok=True)
+
+        best_path = os.path.join(save_dir, f"{options['project']}_best.pth")
+        last_path = os.path.join(save_dir, f"{options['project']}_last.pth")
+
+        torch.save({
+            "epoch": epoch,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "best_rank1": best_rank1
+        }, last_path)
 
         if best_state is not None:
-            torch.save(best_state, save_path)
+            torch.save(best_state, best_path)
         else:
-            torch.save(model.state_dict(), save_path)
+            torch.save(model.state_dict(), best_path)
 
-        print(colored(f"Saved model to {save_path}", "green"))
+        print(colored(f"Saved best model to {best_path}", "green"))
+        print(colored(f"Saved last model to {last_path}", "green"))
+
+        best_artifact = wandb.Artifact(
+            name=f"{options['project']}-best",
+            type="model"
+        )
+        best_artifact.add_file(best_path)
+        wandb.log_artifact(best_artifact)
+
+        last_artifact = wandb.Artifact(
+            name=f"{options['project']}-last",
+            type="model"
+        )
+        last_artifact.add_file(last_path)
+        wandb.log_artifact(last_artifact)
+
+        return {
+            "final_rank1": rank1,
+            "best_rank1": best_rank1,
+            "final_train_loss": avg_loss
+        }

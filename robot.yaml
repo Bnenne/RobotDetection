@@ -44,6 +44,12 @@ parameters:
   project:
     value: "yolo26-sweep"
 
+  model:
+    value: "robot"
+
+  dataset:
+    value: "dataset.yaml"
+
 command:
   - ${env}
   - uv

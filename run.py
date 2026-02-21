@@ -13,23 +13,37 @@ from cli.types import Model, BaseModelConfig, Action
 run = wandb.init()
 c = run.config
 
-args = [
-    "robot", "train",
-    "-m", "yolo26s.pt",
-    "-s", "dataset.yaml",
-    "-lr", str(c.lr0),
-    "-wd", str(c.weight_decay),
-    "-mm", str(c.momentum),
-    "-b",  str(c.batch),
-    "-opt", str(c.optimizer),
-    "-dv", str(c.device),
-    "-i",  str(c.imgsz),
-    "-e",  str(c.epochs),
-    "-w",  str(c.workers),
-    "-p",  str(c.patience),
-    "-n", str(c.project),
-    "-v", "-cl"
-]
+if str(c.model) == "robot":
+    args = [
+        "robot", "train",
+        "-m", "yolo26s.pt",
+        "-s", str(c.dataset),
+        "-lr", str(c.lr0),
+        "-wd", str(c.weight_decay),
+        "-mm", str(c.momentum),
+        "-b",  str(c.batch),
+        "-opt", str(c.optimizer),
+        "-dv", str(c.device),
+        "-i",  str(c.imgsz),
+        "-e",  str(c.epochs),
+        "-w",  str(c.workers),
+        "-p",  str(c.patience),
+        "-n", str(c.project),
+        "-v", "-cl"
+    ]
+elif str(c.model) == "reid":
+    args = [
+        "reid", "train",
+        "-s", str(c.dataset),
+        "-b", str(c.batch),
+        "-e", str(c.epochs),
+        "-lr", str(c.lr),
+        "-p", str(c.p),
+        "-k", str(c.k),
+        "-dv", str(c.device),
+        "-n", str(c.project),
+        "-d", str(c.destination),
+    ]
 
 parsed = parse(args)
 

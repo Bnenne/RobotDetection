@@ -1,0 +1,45 @@
+method: bayes
+program: run.py
+
+metric:
+  name: rank1
+  goal: maximize
+
+parameters:
+  lr:
+    min: 0.00001
+    max: 0.001
+    distribution: log_uniform_values
+
+  p:
+    values: [4, 8, 16]
+
+  k:
+    values: [2, 4, 8]
+
+  batch:
+    values: [32, 64]
+
+  epochs:
+    value: 50
+
+  device:
+    value: "cuda"
+
+  project:
+    value: "RobotReID"
+
+  dataset:
+    value: "reid_dataset"
+
+  destination:
+    value: "models"
+
+  model:
+    value: "reid"
+
+command:
+  - ${env}
+  - uv
+  - run
+  - ${program}
