@@ -1,0 +1,42 @@
+name: Build Windows App (uv)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        run: |
+          powershell -Command "irm https://astral.sh/uv/install.ps1 | iex"
+          echo "$env:USERPROFILE\.cargo\bin" >> $env:GITHUB_PATH
+
+      - name: Sync dependencies
+        run: |
+          uv sync
+
+      - name: Install PyInstaller
+        run: |
+          uv add pyinstaller
+
+      - name: Build application
+        run: |
+          uv run pyinstaller main.py
+
+      - name: Zip dist folder
+        run: |
+          Compress-Archive -Path dist/* -DestinationPath windows-build.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: windows-build.zip
