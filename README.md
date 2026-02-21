@@ -37,6 +37,7 @@ dataset/
     │
     └── ...
 ```
+Currently, there is no validation or testing for ReID models.
 
 # Notes
 The full model I use in my demos videos is large and computationally intensive.
