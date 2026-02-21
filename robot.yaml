@@ -42,7 +42,7 @@ parameters:
     value: 25
 
   project:
-    value: "yolo26-sweep"
+    value: "RobotDetection"
 
   model:
     value: "robot"
@@ -55,3 +55,4 @@ command:
   - uv
   - run
   - ${program}
+  - RobotDetection

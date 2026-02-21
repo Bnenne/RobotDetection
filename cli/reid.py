@@ -17,7 +17,7 @@ class ReID(BaseModelConfig):
         self.action = action
         self.options = add_defaults(options)
 
-    def train(self) -> dict[str, float]:
+    def train(self) -> dict[str, Any]:
         global rank1, avg_loss, epoch
         options = self.options
         device = torch.device(options["device"])

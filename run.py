@@ -1,13 +1,14 @@
 from termcolor import colored
+import wandb, sys
 
-import wandb
 from cli.detector import Detector
-
 from cli.parser import parse
 from cli.reid import ReID
 from cli.types import Model, BaseModelConfig, Action
 
-run = wandb.init(project=wandb.config.project)
+project = sys.argv[-1]
+
+run = wandb.init(project=project)
 c = run.config
 
 if str(c.model) == "robot":

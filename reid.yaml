@@ -43,3 +43,4 @@ command:
   - uv
   - run
   - ${program}
+  - RobotReID

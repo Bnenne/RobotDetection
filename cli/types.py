@@ -34,7 +34,7 @@ class BaseModelConfig:
     def build(self, action: Action, options: dict[str, Any]) -> None:
         pass
 
-    def train(self) -> None:
+    def train(self) -> dict[str, Any]:
         pass
 
     def validate(self) -> None:
