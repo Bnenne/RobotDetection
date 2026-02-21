@@ -10,6 +10,7 @@ To use the project you can download the release, unzip the file, then run the ex
 
 When training a model with ```robot``` make sure your data is in the correct format (e.g. yolo26, yolo11, yolo8, etc.)
 When traing a model with ```reid``` make sure your data is fomatted as:
+```
 dataset/
 ├── train/
 │   ├── robot_001/
@@ -35,6 +36,7 @@ dataset/
     │   └── ...
     │
     └── ...
+```
 
 # Notes
 The full model I use in my demos videos is large and computationally intensive.
