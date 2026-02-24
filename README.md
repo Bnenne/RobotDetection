@@ -37,6 +37,19 @@ dataset/
     │
     └── ...
 ```
+In the cli you should not set your dataset as that directory but rather a yaml file formatted as:
+```
+path: /relative/path/to/dataset
+
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 1
+names:
+  - object_name
+```
+
 Currently, there is no validation or testing for ReID models.
 
 # Notes
