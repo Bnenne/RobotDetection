@@ -1,6 +1,8 @@
-method: bayes
-program: run.py
+method: bayes # Bayesian optimization
+program: run.py # The program entry point
+project: RobotDetection # The project name
 
+# Define the search space
 metric:
   name: metrics/mAP50-95(B)
   goal: maximize
@@ -39,10 +41,10 @@ parameters:
     value: 4
 
   patience:
-    value: 25
+    value: 5
 
   project:
-    value: "yolo26-sweep"
+    value: "RobotDetection"
 
   model:
     value: "robot"
@@ -50,6 +52,7 @@ parameters:
   dataset:
     value: "dataset.yaml"
 
+# The command to run the job.
 command:
   - ${env}
   - uv

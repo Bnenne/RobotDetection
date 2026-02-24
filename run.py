@@ -1,11 +1,7 @@
-import subprocess
-import sys
-
 from termcolor import colored
-
 import wandb
-from cli.detector import Detector
 
+from cli.detector import Detector
 from cli.parser import parse
 from cli.reid import ReID
 from cli.types import Model, BaseModelConfig, Action
@@ -29,7 +25,7 @@ if str(c.model) == "robot":
         "-w",  str(c.workers),
         "-p",  str(c.patience),
         "-n", str(c.project),
-        "-v", "-cl"
+        "-v", "-cl",
     ]
 elif str(c.model) == "reid":
     args = [
@@ -38,11 +34,11 @@ elif str(c.model) == "reid":
         "-b", str(c.batch),
         "-e", str(c.epochs),
         "-lr", str(c.lr),
-        "-p", str(c.p),
-        "-k", str(c.k),
+        "-pk", str(c.p), str(c.k),
         "-dv", str(c.device),
         "-n", str(c.project),
         "-d", str(c.destination),
+        "-p",  str(c.patience),
     ]
 else:
     raise ValueError(colored("Invalid model", "red"))
@@ -75,4 +71,4 @@ else:
     raise ValueError(colored("Invalid action", "red"))
 
 wandb.log(metrics)
-run.finish()
+run.finish(0)
