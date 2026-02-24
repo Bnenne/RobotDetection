@@ -37,7 +37,7 @@ dataset/
     │
     └── ...
 ```
-In the cli you should not set your dataset as that directory but rather a yaml file formatted as:
+If you're using the robot framework, in the cli you should not set your dataset as that directory but rather a yaml file formatted as:
 ```
 path: /relative/path/to/dataset
 
