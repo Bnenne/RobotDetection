@@ -38,7 +38,7 @@ parameters:
     value: 50
 
   workers:
-    value: 4
+    value: 8
 
   patience:
     value: 5
