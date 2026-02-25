@@ -52,7 +52,7 @@ parameters:
   dataset:
     value: "dataset.yaml"
 
-# The command to run the job.
+# Command to run
 command:
   - ${env}
   - uv

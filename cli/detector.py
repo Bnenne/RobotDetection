@@ -7,11 +7,13 @@ from cli.parser import add_defaults
 from cli.types import BaseModelConfig, Action
 
 class Detector(BaseModelConfig):
-    def build(self, action: Action, options: dict[str, Any]) -> None:
+    def build(self, action: Action, options: dict[str, Any]) -> BaseModelConfig:
         self.action = action
         self.options = add_defaults(options)
 
         settings.update({"wandb": False})
+
+        return self
 
     def train(self) -> dict[str, Any]:
         options = self.options

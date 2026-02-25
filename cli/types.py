@@ -31,7 +31,7 @@ class BaseModelConfig:
     action: Action = Action.train
     options: dict[str, Any] = {}
 
-    def build(self, action: Action, options: dict[str, Any]) -> None:
+    def build(self, action: Action, options: dict[str, Any]):
         pass
 
     def train(self) -> dict[str, Any]:
