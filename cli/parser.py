@@ -19,7 +19,7 @@ def parse(args: list[str]) -> ParseResult:
         case _: raise ValueError(colored("Invalid model", "red"))
 
     match args[1]:
-        case "train": action = Action.train
+        case "images": action = Action.train
         case "val": action = Action.val
         case _: raise ValueError(colored("Invalid function", "red"))
 

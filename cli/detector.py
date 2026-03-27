@@ -97,6 +97,12 @@ class Detector(BaseModelConfig):
             frame_number = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
             max_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
+            if frame_number < 1000:
+                continue
+
+            if frame_number > 2000:
+                break
+
             frame_count = colored(f"Frame: {frame_number}/{max_frames}", "blue")
             print(f"\r{frame_count}", end="", flush=True)
 

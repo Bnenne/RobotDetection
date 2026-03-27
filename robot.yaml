@@ -50,7 +50,7 @@ parameters:
     value: "robot"
 
   dataset:
-    value: "dataset.yaml"
+    value: "robot_dataset.yaml"
 
 # Command to run
 command:

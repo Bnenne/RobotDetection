@@ -7,7 +7,7 @@ Models:
   reid                Re-identification model
 
 Actions:
-  train               Train the selected model
+  images               Train the selected model
   val                 Validate the selected model
 
 Options:
@@ -49,8 +49,8 @@ General:
 
 Examples:
 
-  main.exe robot train -s data/robot -e 100 -b 16 -dv cuda
-  main.exe reid train -s data/reid -pk 8 4 -lr 0.001
+  main.exe robot images -s data/robot -e 100 -b 16 -dv cuda
+  main.exe reid images -s data/reid -pk 8 4 -lr 0.001
   main.exe robot val -d runs/exp1
 
 Notes:

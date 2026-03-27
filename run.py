@@ -13,7 +13,7 @@ c = run.config # Access configuration
 # Construct arguments based on model
 if str(c.model) == "robot":
     args = [
-        "robot", "train",
+        "robot", "images",
         "-m", "yolo26s.pt",
         "-s", str(c.dataset),
         "-lr", str(c.lr0),
@@ -31,7 +31,7 @@ if str(c.model) == "robot":
     ]
 elif str(c.model) == "reid":
     args = [
-        "reid", "train",
+        "reid", "images",
         "-s", str(c.dataset),
         "-b", str(c.batch),
         "-e", str(c.epochs),
@@ -67,7 +67,7 @@ if not isinstance(model_config, BaseModelConfig):
     raise ValueError(colored("Invalid model config", "red"))
 
 # Build model and run training
-model_config.build(action, options).train()
+metrics = model_config.build(action, options).train()
 
 wandb.log(metrics)
 run.finish(0)

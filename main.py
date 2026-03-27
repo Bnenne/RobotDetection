@@ -5,8 +5,8 @@ from cli.parser import parse
 from cli.types import *
 from cli.detector import Detector
 from cli.reid import ReID
-from help import HELP_TEXT
-from hyperparameters import get_hyperparameters
+from utils.help import HELP_TEXT
+from utils.hyperparameters import get_hyperparameters
 
 def main():
     if "--help" in sys.argv or "-h" in sys.argv:

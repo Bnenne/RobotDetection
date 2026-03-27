@@ -1875,6 +1875,7 @@ dependencies = [
     { name = "termcolor" },
     { name = "torchreid" },
     { name = "ultralytics" },
+    { name = "utils" },
     { name = "valkey" },
     { name = "wandb" },
 ]
@@ -1890,6 +1891,7 @@ requires-dist = [
     { name = "termcolor", specifier = ">=3.3.0" },
     { name = "torchreid", specifier = ">=0.2.5" },
     { name = "ultralytics", specifier = ">=8.4.4" },
+    { name = "utils", specifier = ">=1.0.2" },
     { name = "valkey", specifier = ">=6.1.1" },
     { name = "wandb", specifier = ">=0.24.2" },
 ]
@@ -2269,6 +2271,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/c7/24/5f1b3bdffd70275f6
 wheels = [
     { url = "https://files.pythonhosted.org/packages/39/08/aaaad47bc4e9dc8c725e68f9d04865dbcb2052843ff09c97b08904852d84/urllib3-2.6.3-py3-none-any.whl", hash = "sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4", size = 131584, upload-time = "2026-01-07T16:24:42.685Z" },
 ]
+
+[[package]]
+name = "utils"
+version = "1.0.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ad/1f/c196d21c2df061923154aecf24cab049a114394956e90c9bfbfdd398e27a/utils-1.0.2.tar.gz", hash = "sha256:f4d5157e27e9d434006b5b52a1ec951a34e53e7ecaa145d43a153ec452eb5d9e", size = 13203, upload-time = "2024-01-06T07:11:25.75Z" }
 
 [[package]]
 name = "valkey"
