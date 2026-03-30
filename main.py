@@ -1,6 +1,7 @@
 import sys
 from termcolor import colored
 
+from cli.bumper import BumperReader
 from cli.parser import parse
 from cli.types import *
 from cli.detector import Detector
@@ -41,6 +42,8 @@ def main():
         model_config = Detector()
     elif model == Model.reid:
         model_config = ReID()
+    elif model == Model.bumper:
+        model_config = BumperReader()
     else:
         raise ValueError(colored("Invalid model", "red"))
 

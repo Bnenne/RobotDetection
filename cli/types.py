@@ -15,6 +15,7 @@ class Action(Enum):
 class Model(Enum):
     robot = (1, "RobotDetection")
     reid = (2, "ReID")
+    bumper = (3, "BumperDetection")
 
     def __new__(cls, code: int, label: str) -> "Model":
         obj = object.__new__(cls)
