@@ -16,10 +16,11 @@ def parse(args: list[str]) -> ParseResult:
     match args[0]:
         case "robot": model = Model.robot
         case "reid": model = Model.reid
+        case "bumper": model = Model.bumper
         case _: raise ValueError(colored("Invalid model", "red"))
 
     match args[1]:
-        case "train": action = Action.train
+        case "images": action = Action.train
         case "val": action = Action.val
         case _: raise ValueError(colored("Invalid function", "red"))
 
@@ -128,6 +129,13 @@ def parse(args: list[str]) -> ParseResult:
                     if i + 1 >= len(options) or options[i + 1].startswith("-"):
                         raise ValueError(colored("Model is required", "red"))
                     config["model"] = options[i + 1]
+                    i += 2
+
+                # Bumper Model
+                case "-bm":
+                    if i + 1 >= len(options) or options[i + 1].startswith("-"):
+                        raise ValueError(colored("Bumper Model is required", "red"))
+                    config["bumper_model"] = options[i + 1]
                     i += 2
 
                 # p and k values for PKSampler

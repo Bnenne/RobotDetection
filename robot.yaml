@@ -38,7 +38,7 @@ parameters:
     value: 50
 
   workers:
-    value: 4
+    value: 8
 
   patience:
     value: 5
@@ -50,9 +50,9 @@ parameters:
     value: "robot"
 
   dataset:
-    value: "dataset.yaml"
+    value: "robot_dataset.yaml"
 
-# The command to run the job.
+# Command to run
 command:
   - ${env}
   - uv

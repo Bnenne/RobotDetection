@@ -7,11 +7,13 @@ from cli.parser import add_defaults
 from cli.types import BaseModelConfig, Action
 
 class Detector(BaseModelConfig):
-    def build(self, action: Action, options: dict[str, Any]) -> None:
+    def build(self, action: Action, options: dict[str, Any]) -> BaseModelConfig:
         self.action = action
         self.options = add_defaults(options)
 
         settings.update({"wandb": False})
+
+        return self
 
     def train(self) -> dict[str, Any]:
         options = self.options
@@ -94,6 +96,12 @@ class Detector(BaseModelConfig):
 
             frame_number = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
             max_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+            if frame_number < 1000:
+                continue
+
+            if frame_number > 2000:
+                break
 
             frame_count = colored(f"Frame: {frame_number}/{max_frames}", "blue")
             print(f"\r{frame_count}", end="", flush=True)

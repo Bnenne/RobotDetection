@@ -13,9 +13,11 @@ from reid.dataset import load_dataset
 from cli.types import BaseModelConfig, Action
 
 class ReID(BaseModelConfig):
-    def build(self, action: Action, options: dict[str, Any]) -> None:
+    def build(self, action: Action, options: dict[str, Any]) -> BaseModelConfig:
         self.action = action
         self.options = add_defaults(options)
+
+        return self
 
     def train(self) -> dict[str, Any]:
         global rank1, avg_loss, epoch

@@ -6,12 +6,14 @@ from cli.parser import parse
 from cli.reid import ReID
 from cli.types import Model, BaseModelConfig, Action
 
+# Initialize wandb
 run = wandb.init()
-c = run.config
+c = run.config # Access configuration
 
+# Construct arguments based on model
 if str(c.model) == "robot":
     args = [
-        "robot", "train",
+        "robot", "images",
         "-m", "yolo26s.pt",
         "-s", str(c.dataset),
         "-lr", str(c.lr0),
@@ -29,7 +31,7 @@ if str(c.model) == "robot":
     ]
 elif str(c.model) == "reid":
     args = [
-        "reid", "train",
+        "reid", "images",
         "-s", str(c.dataset),
         "-b", str(c.batch),
         "-e", str(c.epochs),
@@ -43,12 +45,15 @@ elif str(c.model) == "reid":
 else:
     raise ValueError(colored("Invalid model", "red"))
 
+# Parse arguments into ParseResult
 parsed = parse(args)
 
+# Set variables from ParseResult
 model = parsed.model
 action = parsed.action
 options = parsed.options
 
+# Build model based on model type
 if model == Model.robot:
     model_config = Detector()
 elif model == Model.reid:
@@ -61,14 +66,8 @@ print(colored(f"Running {action.label} on {model.label}", "green"))
 if not isinstance(model_config, BaseModelConfig):
     raise ValueError(colored("Invalid model config", "red"))
 
-model_config.build(action, options)
-
-if action == Action.train:
-    metrics = model_config.train()
-elif action == Action.val:
-    metrics = model_config.validate()
-else:
-    raise ValueError(colored("Invalid action", "red"))
+# Build model and run training
+metrics = model_config.build(action, options).train()
 
 wandb.log(metrics)
 run.finish(0)
