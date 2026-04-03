@@ -1,33 +1,35 @@
 import easyocr
 import re
+import numpy as np
+import cv2
 
 class OCR:
-    def __init__(self):
-        # Initialize EasyOCR reader (English only)
-        self.reader = easyocr.Reader(['en'], gpu=False)
+    def __init__(self, gpu=False, upscale=True, model_path="FSRCNN_x2.pb"):
+        self.reader = easyocr.Reader(['en'], gpu=gpu)
+        self.upscale = upscale
+        self.sr = None
 
-    def read(self, image_path):
-        # Pass file path directly
-        results = self.reader.readtext(image_path, detail=1)  # detail=1 gives (bbox, text, confidence)
+    def _upscale(self, image):
+        return cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_LANCZOS4)
+
+    def read(self, image):
+        """
+        Accepts a file path (str) or a numpy array (BGR).
+        Returns a list of (number_string, confidence) tuples.
+        """
+        if isinstance(image, str):
+            image = cv2.imread(image)
+
+        image = self._upscale(image)
+
+        # EasyOCR expects RGB
+        rgb = image[:, :, ::-1]
+
+        results = self.reader.readtext(rgb, detail=1)
 
         texts = []
         for bbox, text, confidence in results:
-            # Filter only numbers (FRC bumper numbers are digits)
             digits = re.findall(r'\d+', text)
             if digits:
                 texts.append((digits[0], confidence))
-
         return texts
-
-
-# Example usage
-if __name__ == "__main__":
-    ocr = OCR()
-
-    results = ocr.read("./img_2.png")
-
-    if results:
-        for number, conf in results:
-            print(f"Detected number: {number} (Confidence: {conf:.2f})")
-    else:
-        print("No numbers detected")

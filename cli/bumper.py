@@ -5,6 +5,7 @@ from termcolor import colored
 
 from cli.parser import add_defaults
 from cli.types import BaseModelConfig, Action
+from utils.ocr import OCR
 
 
 class BumperReader(BaseModelConfig):
@@ -16,7 +17,7 @@ class BumperReader(BaseModelConfig):
 
         return self
 
-    def _load_models(self) -> tuple[YOLO, YOLO]:
+    def _load_models(self) -> tuple[YOLO, YOLO, OCR]:
         options = self.options
 
         device = options["device"]
@@ -32,7 +33,9 @@ class BumperReader(BaseModelConfig):
         print(colored("Loading bumper model", "green"))
         bumper_model = YOLO(options["bumper_model"])
 
-        return robot_model, bumper_model
+        ocr = OCR(gpu=(self._device == "cpu"))
+
+        return robot_model, bumper_model, ocr
 
     def validate(self) -> None:
         """
@@ -43,7 +46,7 @@ class BumperReader(BaseModelConfig):
         """
         options = self.options
 
-        robot_model, bumper_model = self._load_models()
+        robot_model, bumper_model, ocr = self._load_models()
 
         video_path = options["data"]
 
@@ -91,7 +94,7 @@ class BumperReader(BaseModelConfig):
 
             annotated = frame.copy()
 
-            # ── Step 1: detect robots ──────────────────────────────────────
+            # detect robots
             robot_results = robot_model.track(
                 frame,
                 tracker=options["tracker"] + ".yaml",
@@ -127,7 +130,7 @@ class BumperReader(BaseModelConfig):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2
                 )
 
-                # ── Step 2: run bumper model on the crop ───────────────────
+                # run bumper model on the crop
                 bumper_results = bumper_model.predict(
                     robot_crop,
                     verbose=False,
@@ -141,12 +144,23 @@ class BumperReader(BaseModelConfig):
                 for b_box in bumper_boxes:
                     bx1, by1, bx2, by2 = map(int, b_box.xyxy[0].tolist())
 
-                    # translate crop-relative coords back to full frame
-                    fx1 = x1 + bx1; fy1 = y1 + by1
-                    fx2 = x1 + bx2; fy2 = y1 + by2
+                    fx1 = x1 + bx1;
+                    fy1 = y1 + by1
+                    fx2 = x1 + bx2;
+                    fy2 = y1 + by2
 
-                    conf  = float(b_box.conf[0])
-                    b_label = f"Number {conf:.2f}"
+                    conf = float(b_box.conf[0])
+
+                    # OCR on the bumper crop
+                    bumper_crop = robot_crop[by1:by2, bx1:bx2]
+                    upscaled = cv2.resize(bumper_crop, None, fx=2, fy=2, interpolation=cv2.INTER_LANCZOS4)
+                    ocr_results = ocr.read(upscaled) if upscaled.size > 0 else []
+
+                    if ocr_results:
+                        team_number, ocr_conf = ocr_results[0]  # best result
+                        b_label = f"#{team_number} ({ocr_conf:.2f})"
+                    else:
+                        b_label = f"? ({conf:.2f})"  # YOLO found bumper, OCR didn't read it
 
                     cv2.rectangle(annotated, (fx1, fy1), (fx2, fy2), (0, 0, 255), 2)
                     cv2.putText(
