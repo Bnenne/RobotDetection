@@ -5,8 +5,8 @@ from termcolor import colored
 
 from cli.parser import add_defaults
 from cli.types import BaseModelConfig, Action
-from utils.ocr import OCR
-from utils.similarity import visual_similarity
+from bumper.ocr import OCR
+from bumper.similarity import visual_similarity
 
 
 class BumperReader(BaseModelConfig):
