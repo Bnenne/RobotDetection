@@ -10,7 +10,9 @@ class OCR:
         self.sr = None
 
     def _upscale(self, image):
-        return cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_LANCZOS4)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray = cv2.convertScaleAbs(gray, alpha=0.5, beta=0)
+        return cv2.resize(gray, None, fx=2, fy=2, interpolation=cv2.INTER_LANCZOS4)
 
     def read(self, image):
         """
@@ -22,8 +24,7 @@ class OCR:
 
         image = self._upscale(image)
 
-        # EasyOCR expects RGB
-        rgb = image[:, :, ::-1]
+        rgb = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
 
         results = self.reader.readtext(rgb, detail=1)
 

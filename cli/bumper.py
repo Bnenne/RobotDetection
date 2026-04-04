@@ -6,6 +6,7 @@ from termcolor import colored
 from cli.parser import add_defaults
 from cli.types import BaseModelConfig, Action
 from utils.ocr import OCR
+from utils.similarity import visual_similarity
 
 
 class BumperReader(BaseModelConfig):
@@ -33,6 +34,7 @@ class BumperReader(BaseModelConfig):
         print(colored("Loading bumper model", "green"))
         bumper_model = YOLO(options["bumper_model"])
 
+        print(colored("Loading OCR model", "green"))
         ocr = OCR(gpu=(self._device == "cpu"))
 
         return robot_model, bumper_model, ocr
@@ -124,11 +126,6 @@ class BumperReader(BaseModelConfig):
                 track_id = int(box.id[0]) if box.id is not None else -1
                 label    = f"Robot {track_id}" if track_id != -1 else "Robot"
                 cv2.rectangle(annotated, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(
-                    annotated, label,
-                    (x1, y1 - 8),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2
-                )
 
                 # run bumper model on the crop
                 bumper_results = bumper_model.predict(
@@ -139,22 +136,35 @@ class BumperReader(BaseModelConfig):
 
                 bumper_boxes = bumper_results[0].boxes
                 if bumper_boxes is None or len(bumper_boxes) == 0:
+                    cv2.putText(
+                        annotated, label,
+                        (x1, y1 - 8),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2
+                    )
                     continue
+
+                determined_number = {
+                    "team": None,
+                    "confidence": None
+                }
+
+                teams = [8825, 935, 9410, 3160, 1987, 5801]
 
                 for b_box in bumper_boxes:
                     bx1, by1, bx2, by2 = map(int, b_box.xyxy[0].tolist())
 
-                    fx1 = x1 + bx1;
+                    fx1 = x1 + bx1
                     fy1 = y1 + by1
-                    fx2 = x1 + bx2;
+                    fx2 = x1 + bx2
                     fy2 = y1 + by2
 
                     conf = float(b_box.conf[0])
 
                     # OCR on the bumper crop
                     bumper_crop = robot_crop[by1:by2, bx1:bx2]
-                    upscaled = cv2.resize(bumper_crop, None, fx=2, fy=2, interpolation=cv2.INTER_LANCZOS4)
-                    ocr_results = ocr.read(upscaled) if upscaled.size > 0 else []
+                    ocr_results = ocr.read(bumper_crop) if bumper_crop.size > 0 else []
+
+                    team_number = None
 
                     if ocr_results:
                         team_number, ocr_conf = ocr_results[0]  # best result
@@ -167,6 +177,29 @@ class BumperReader(BaseModelConfig):
                         annotated, b_label,
                         (fx1, fy1 - 8),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2
+                    )
+
+                    if team_number is not None:
+                        scores = {}
+                        for possible_team in teams:
+                            sim = visual_similarity(possible_team, team_number)
+                            scores[possible_team] = sim
+                        most_sim_team = max(scores, key=scores.get)
+                        if determined_number["team"] is None or determined_number["confidence"] < scores[most_sim_team]:
+                            determined_number["team"] = most_sim_team
+                            determined_number["confidence"] = scores[most_sim_team]
+
+                if determined_number["team"] is not None:
+                    cv2.putText(
+                        annotated, label + f": #{determined_number["team"]} ({determined_number["confidence"]:.2f})",
+                        (x1, y1 - 8),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2
+                    )
+                else:
+                    cv2.putText(
+                        annotated, label,
+                        (x1, y1 - 8),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2
                     )
 
             out.write(annotated)
