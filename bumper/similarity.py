@@ -1,36 +1,6 @@
-"""
-visual_similarity.py
---------------------
-Computes a perceptual similarity score [0.0, 1.0] between two numbers
-based on how visually alike they look — digit shapes, positional alignment,
-and structural patterns.
-
-Score guide:
-  1.00  identical
-  0.75+ very similar  (e.g. 1987 vs 1907, 100 vs 700)
-  0.50–0.75  somewhat similar
-  0.25–0.50  loosely similar
-  < 0.25  visually distinct
-
-Algorithm overview
-------------------
-1. Digit-shape similarity  — uses a pre-built perceptual distance matrix
-   derived from how digits look on a 7-segment / LCD display.
-2. Positional alignment     — digits in the same column score higher than
-   those that only appear somewhere in the other number.
-3. Length penalty           — numbers of different lengths are penalised.
-4. Structural bonus         — rewards shared high-level patterns such as
-   repeated digits, palindromes, or monotone runs.
-
-All sub-scores are normalised to [0, 1] and combined with tuned weights.
-"""
-
 from __future__ import annotations
-import sys
 
-# ---------------------------------------------------------------------------
-# 1. Perceptual digit-shape similarity — flat lookup table
-# ---------------------------------------------------------------------------
+# Perceptual digit-shape similarity, flat lookup table
 # Pre-compute everything into a single flat tuple indexed by (ord(d1)-48)*10 + (ord(d2)-48).
 # Avoids dict lookups entirely on the hot path.
 
@@ -78,9 +48,7 @@ def digit_similarity(d1: str, d2: str) -> float:
     return _SIM_TABLE[(ord(d1) - _ORD0) * 10 + (ord(d2) - _ORD0)]
 
 
-# ---------------------------------------------------------------------------
-# 2. Positional alignment score
-# ---------------------------------------------------------------------------
+# Positional alignment score
 # Precompute digit counts via a fixed-size array [0..9] instead of Counter.
 
 def _positional_score(s1: str, s2: str) -> float:
@@ -139,9 +107,7 @@ def _positional_score(s1: str, s2: str) -> float:
     return positional
 
 
-# ---------------------------------------------------------------------------
-# 3. Length penalty
-# ---------------------------------------------------------------------------
+# Length penalty
 
 def _length_score(len1: int, len2: int) -> float:
     if len1 == len2:
@@ -153,9 +119,7 @@ def _length_score(len1: int, len2: int) -> float:
     return ratio * (ratio ** 0.5)  # equivalent to ratio ** 1.5
 
 
-# ---------------------------------------------------------------------------
-# 4. Structural pattern detection
-# ---------------------------------------------------------------------------
+# Structural pattern detection
 # Encode patterns as bit flags for fast comparison instead of set operations.
 
 _PAT_ALL_SAME   = 1
@@ -225,7 +189,6 @@ def _detect_patterns(s: str) -> int:
 
 
 def _popcount(x: int) -> int:
-    """Count set bits."""
     c = 0
     while x:
         c += 1
@@ -251,9 +214,7 @@ def _structural_score(s1: str, s2: str) -> float:
     return 0.35 + 0.45 * jaccard
 
 
-# ---------------------------------------------------------------------------
-# 5. Combined similarity function
-# ---------------------------------------------------------------------------
+# Combined similarity function
 
 _W_POSITIONAL  = 0.60
 _W_LENGTH      = 0.25
