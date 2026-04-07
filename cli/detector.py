@@ -1,4 +1,6 @@
 from typing import Any
+
+from numpy import ndarray, dtype, integer
 from ultralytics import YOLO, settings
 import cv2, torch, os
 from termcolor import colored
@@ -91,6 +93,7 @@ class Detector(BaseModelConfig):
 
         while cap.isOpened():
             ret, frame = cap.read()
+            frame: ndarray[Any, dtype[Any]] = frame
             if not ret:
                 break
 
